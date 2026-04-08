@@ -1,7 +1,7 @@
 import { Table, Column } from '@servicenow/sdk/core';
 
 export const ReceiptTable = Table({
-    name: 'x_receivow_receipt',
+    name: 'x_1984201_receivo_receipt',
     label: 'Receipt Record',
     schema: { 
         store_name: Column.Choice({ 
