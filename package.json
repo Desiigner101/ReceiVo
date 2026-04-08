@@ -1,0 +1,23 @@
+{
+  "name": "x-1984201-recei-vo",
+  "version": "1.0.0",
+  "description": "ReceiVow is a specialized digital locker designed to solve the issue of lost or faded thermal paper receipts. By focusing on the Philippine healthcare retail sector (e.g., Watsons, Mercury Drug, Southstar Drug), the application provides a secure environment to store digital evidence for warranty claims and medical reimbursements.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "now-sdk build",
+    "deploy": "now-sdk install",
+    "transform": "now-sdk transform",
+    "types": "now-sdk dependencies"
+  },
+  "devDependencies": {
+    "@servicenow/sdk": "4.5.0",
+    "@servicenow/glide": "26.0.1",
+    "eslint": "8.50.0",
+    "@servicenow/eslint-plugin-sdk-app-plugin": "4.5.0",
+    "@servicenow/isomorphic-rollup": "^1.2.3"
+  },
+  "dependencies": {
+    "react": "19.x",
+    "react-dom": "19.x"
+  }
+}
