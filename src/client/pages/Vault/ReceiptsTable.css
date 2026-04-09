@@ -1,0 +1,140 @@
+.receipts-table-container {
+  font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+}
+
+.receipts-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.receipts-table,
+.receipts-table th,
+.receipts-table td {
+  border: none;
+}
+
+.receipts-table thead tr {
+  border-bottom: 1px solid var(--table-border);
+}
+
+
+.receipts-table th {
+  padding: 16px 12px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1em;
+  color: #333;
+}
+
+.receipts-table td {
+  padding: 16px 12px;
+  border-bottom: 1px solid var(--table-border);
+}
+
+.receipt-cell {
+  text-align: center;
+  font-weight: 500;
+  color: var(--receipt-color);
+}
+
+.store-cell {
+  text-align: left; 
+}
+
+
+.store-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.category-cell {
+  text-align: center;
+}
+
+.category-pill {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.category-pill.device {
+  background-color: var(--category-device-bg);
+  color: var(--category-device-text);
+}
+
+.category-pill.meds {
+  background-color: var(--category-meds-bg);
+  color: var(--category-meds-text);
+}
+
+.date-cell {
+  text-align: left;
+  color: var(--date-color);
+  font-weight: 500;
+}
+
+.amount-cell {
+  text-align: center;
+  font-weight: 600;
+  color: #333;
+}
+
+.warranty-cell {
+  text-align: center;
+}
+
+.warranty-pill {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.warranty-pill.active {
+  background-color: var(--warranty-active-bg);
+  color: var(--warranty-active-text);
+}
+
+.warranty-pill.expiring {
+  background-color: var(--warranty-expiring-bg);
+  color: var(--warranty-expiring-text);
+}
+
+.warranty-pill.expired {
+  background-color: var(--warranty-expired-bg);
+  color: var(--warranty-expired-text);
+}
+
+.action-cell {
+  text-align: center;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px 8px;
+  border: 2px solid #dbdbdb;
+  border-radius: .5em;
+}
+
+.btn-view {
+  color: var(--button-view);
+}
+
+.btn-edit {
+  color: var(--button-edit);
+}
+
+.btn-delete {
+  color: var(--button-delete);
+}
