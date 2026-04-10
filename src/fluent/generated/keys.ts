@@ -16,6 +16,13 @@ declare global {
                 }
                 composite: [
                     {
+                        table: 'sys_ui_page'
+                        id: '6c37cb0f93c48b10612632edfaba103b'
+                        key: {
+                            endpoint: 'x_1984201_receivo_vault_page.do'
+                        }
+                    },
+                    {
                         table: 'sys_ux_lib_asset'
                         id: 'ab275b4d84c04b65aa619bfda7363e08'
                         key: {
@@ -27,6 +34,13 @@ declare global {
                         id: 'ac2c9f8fab584b1cbdc180b5629d7a03'
                         key: {
                             name: 'x_1984201_receivo/main.js.map'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_page'
+                        id: 'acca60aa022745209c3380c1d9933a87'
+                        key: {
+                            endpoint: 'x_1984201_receivo_home page.do'
                         }
                     },
                     {

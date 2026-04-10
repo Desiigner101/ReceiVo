@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReceiptsTable } from "./components/ReceiptsTable";
+import { ReceiptsTable } from "../../components/listComponents/ReceiptsTable";
 import mockReceipts from './mockReceipts.json';
 
 function VaultPage() {
