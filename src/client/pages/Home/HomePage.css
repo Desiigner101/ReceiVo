@@ -1,1 +1,92 @@
- 
+.homepage-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+    font-family: 'Montserrat', system-ui, sans-serif;
+  }
+  
+  .homepage-body {
+    display: flex;
+    flex: 1;
+  }
+  
+  .homepage-main {
+    flex: 1;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .homepage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .homepage-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #222;
+    margin: 0;
+  }
+  
+  .homepage-date {
+    font-size: 13px;
+    color: #aaaaaa;
+    margin: 4px 0 0 0;
+  }
+  
+  .homepage-kpis {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .homepage-receipts {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    padding: 24px;
+  }
+  
+  .receipts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .receipts-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+    margin: 0;
+  }
+  
+  .receipts-viewall {
+    font-size: 13px;
+    color: #00BFA5;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  
+  .receipts-viewall:hover {
+    text-decoration: underline;
+  }
+
+  .upload-btn {
+    background-color: #00BFA5;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 191, 165, 0.4);
+  }
+  
+  .upload-btn:hover {
+    background-color: #00a896;
+  }
