@@ -177,7 +177,7 @@ input:checked + .toggle-slider:before {
 
 .warranty-action-buttons {
     display: flex;
-    gap: 8px;
+    gap: 9px;
     align-items: center;
 }
 
