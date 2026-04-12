@@ -1,9 +1,7 @@
 import React from 'react'
-import VaultPage from './pages/Vault/VaultPage'
-
+import NotificationPage from './pages/Notification/NotificationPage'
 import './app.css'
-import HomePage from './pages/Home/HomePage'
 
 export default function App() {
-    return <HomePage />
+    return <NotificationPage />
 }
