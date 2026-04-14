@@ -37,7 +37,7 @@
 }
 
 .store-cell {
-  text-align: left; 
+  text-align: center; 
 }
 
 
@@ -69,7 +69,7 @@
 }
 
 .date-cell {
-  text-align: left;
+  text-align: center;
   color: var(--date-color);
   font-weight: 500;
 }

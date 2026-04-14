@@ -12,6 +12,12 @@ const HomePage = () => {
   const [activePage, setActivePage] = useState('Home');
   const [showUpload, setShowUpload] = useState(false);
 
+  // Dynamic KPI calculations based on actual receipt data
+  const totalReceipts = mockReceipts.length;
+  const activeWarranties = mockReceipts.filter(r => r.warranty === 'Active').length;
+  const expiringSoon = mockReceipts.filter(r => r.warranty === 'Expiring').length;
+  const allValid = expiringSoon === 0 && mockReceipts.filter(r => r.warranty === 'Expired').length === 0;
+
   return (
     <div className="homepage-wrapper">
       <TopBar />
@@ -40,9 +46,24 @@ const HomePage = () => {
           </div>
 
           <div className="homepage-kpis">
-            <KPI title="Total Receipts" value={24} subtitle="↑ 4 this week" type="default" />
-            <KPI title="Active Warranties" value={8} subtitle="All valid" type="warning" />
-            <KPI title="Expiring Soon" value={2} subtitle="Within 30 days" type="danger" />
+            <KPI
+              title="Total Receipts"
+              value={totalReceipts}
+              subtitle={`▲ ${totalReceipts} total`}
+              type="default"
+            />
+            <KPI
+              title="Active Warranties"
+              value={activeWarranties}
+              subtitle={allValid ? 'All valid' : `${activeWarranties} active`}
+              type="warning"
+            />
+            <KPI
+              title="Expiring Soon"
+              value={expiringSoon}
+              subtitle={expiringSoon === 0 ? 'None expiring' : 'Within 30 days'}
+              type="danger"
+            />
           </div>
 
           <div className="homepage-receipts">
@@ -57,8 +78,8 @@ const HomePage = () => {
       </div>
 
       {showUpload && (
-          <UploadPopUp onClose={() => setShowUpload(false)} />
-        )}
+        <UploadPopUp onClose={() => setShowUpload(false)} />
+      )}
 
     </div>
   );
