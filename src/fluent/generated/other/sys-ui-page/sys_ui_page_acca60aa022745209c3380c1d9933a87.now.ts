@@ -38,8 +38,6 @@ window.g_ck = "$[gs.getSession().getSessionToken() || gs.getSessionToken()]";</s
   </head>
   <body>
     <div id="root"></div>
-    <p>This is a test, e delete lng</p>
-    <p>This is the second branch test</p>
   </body>
 </html>`,
 })

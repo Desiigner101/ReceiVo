@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './UploadPopup.css';
+import './UploadPopUp.css';
 
 const UploadPopUp = ({ onClose }) => {
   const [fileName, setFileName] = useState('');

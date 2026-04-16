@@ -39,8 +39,7 @@ const mockWarrantyNotifs = [
   },
 ];
 
-const NotificationPage = () => {
-  const [activePage, setActivePage] = useState('Notification');
+const NotificationPage = ({ activePage, onNavigate }) => {
   const [activeTab, setActiveTab] = useState('all');
   const [notifications, setNotifications] = useState(mockWarrantyNotifs);
 
@@ -60,7 +59,7 @@ const NotificationPage = () => {
     <div className="notif-wrapper">
       <TopBar />
       <div className="notif-body">
-        <NavigationBar activePage={activePage} onNavigate={setActivePage} />
+        <NavigationBar activePage={activePage} onNavigate={onNavigate} />
 
         <div className="notif-main">
           <div className="notif-card">

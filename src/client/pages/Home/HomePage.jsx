@@ -4,12 +4,12 @@ import TopBar from '../../components/globalComponents/TopBar';
 import NavigationBar from '../../components/globalComponents/NavigationBar';
 import Button from '../../components/globalComponents/Button';
 import KPI from '../../components/displayComponents/KPI';
-import UploadPopup from '../../components/uploadComponents/UploadPopup';
+import UploadPopUp from '../../components/uploadComponents/UploadPopUp';
 import { ReceiptsTable } from '../../components/listComponents/ReceiptsTable';
 import mockReceipts from '../Vault/mockReceipts.json';
 
-const HomePage = () => {
-  const [activePage, setActivePage] = useState('Home');
+const HomePage = ({ activePage, onNavigate }) => {
+  
   const [showUpload, setShowUpload] = useState(false);
 
   // Dynamic KPI calculations based on actual receipt data
@@ -22,7 +22,7 @@ const HomePage = () => {
     <div className="homepage-wrapper">
       <TopBar />
       <div className="homepage-body">
-        <NavigationBar activePage={activePage} onNavigate={setActivePage} />
+        <NavigationBar activePage={activePage} onNavigate={onNavigate} />
         <div className="homepage-main">
 
           <div className="homepage-header">
@@ -35,7 +35,7 @@ const HomePage = () => {
             <button
               type="button"
               className="upload-btn"
-              onClickCapture={(e) => {
+              onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 setShowUpload(true);
