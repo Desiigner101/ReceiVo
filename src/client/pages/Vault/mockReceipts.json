@@ -1,47 +1,22 @@
 [
-  { 
-    "id": 1, 
-    "receipt": "RCV-001", 
-    "store": "Mercury Drug", 
-    "category": "Meds", 
-    "date": "January 15, 2025", 
-    "amount": 450.50, 
-    "warranty": "Active" 
-  },
-  { 
-    "id": 2, 
-    "receipt": "RCV-002", 
-    "store": "Southstar Drug", 
-    "category": "Device", 
-    "date": "February 20, 2025", 
-    "amount": 1299.99, 
-    "warranty": "Active" 
-  },
-  { 
-    "id": 3, 
-    "receipt": "RCV-003", 
-    "store": "Mercury Drug", 
-    "category": "Meds", 
-    "date": "March 10, 2025", 
-    "amount": 350.75, 
-    "warranty": "Expiring" 
-  },
-  { 
-    "id": 4, 
-    "receipt": "RCV-004", 
-    "store": "Southstar Drug", 
-    "category": "Device", 
-    "date": "December 5, 2024", 
-    "amount": 2500.00, 
-    "warranty": "Expired" 
-  },
-  { 
-    "id": 5, 
-    "receipt": "RCV-005", 
-    "store": "Mercury Drug", 
-    "category": "Meds", 
-    "date": "April 8, 2025", 
-    "amount": 125.25, 
-    "warranty": "Active" 
-  }
+  { "id": 1, "receipt": "RCV-001", "store": "Mercury Drug", "category": "Meds", "date": "January 15, 2025", "amount": 450.50, "warranty": "Active" },
+  { "id": 2, "receipt": "RCV-002", "store": "Southstar Drug", "category": "Device", "date": "February 20, 2025", "amount": 1299.99, "warranty": "Active" },
+  { "id": 3, "receipt": "RCV-003", "store": "Mercury Drug", "category": "Meds", "date": "March 10, 2025", "amount": 350.75, "warranty": "Expiring" },
+  { "id": 4, "receipt": "RCV-004", "store": "Southstar Drug", "category": "Device", "date": "December 5, 2024", "amount": 2500.00, "warranty": "Expired" },
+  { "id": 5, "receipt": "RCV-005", "store": "Mercury Drug", "category": "Meds", "date": "April 8, 2025", "amount": 125.25, "warranty": "Active" },
+  { "id": 6, "receipt": "RCV-006", "store": "Watsons", "category": "Beauty", "date": "January 22, 2025", "amount": 899.99, "warranty": "Active" },
+  { "id": 7, "receipt": "RCV-007", "store": "Mercury Drug", "category": "Device", "date": "November 11, 2024", "amount": 3450.00, "warranty": "Expired" },
+  { "id": 8, "receipt": "RCV-008", "store": "Southstar Drug", "category": "Meds", "date": "March 1, 2025", "amount": 210.30, "warranty": "Active" },
+  { "id": 9, "receipt": "RCV-009", "store": "Watsons", "category": "Beauty", "date": "April 12, 2025", "amount": 560.00, "warranty": "Expiring" },
+  { "id": 10, "receipt": "RCV-010", "store": "Mercury Drug", "category": "Meds", "date": "February 28, 2025", "amount": 78.90, "warranty": "Expiring" },
+  { "id": 11, "receipt": "RCV-011", "store": "Southstar Drug", "category": "Device", "date": "May 2, 2025", "amount": 4999.99, "warranty": "Active" },
+  { "id": 12, "receipt": "RCV-012", "store": "Watsons", "category": "Meds", "date": "January 5, 2025", "amount": 315.25, "warranty": "Active" },
+  { "id": 13, "receipt": "RCV-013", "store": "Mercury Drug", "category": "Device", "date": "December 20, 2024", "amount": 1875.50, "warranty": "Expired" },
+  { "id": 14, "receipt": "RCV-014", "store": "Southstar Drug", "category": "Beauty", "date": "March 25, 2025", "amount": 430.00, "warranty": "Active" },
+  { "id": 15, "receipt": "RCV-015", "store": "Watsons", "category": "Device", "date": "April 1, 2025", "amount": 675.75, "warranty": "Expiring" },
+  { "id": 16, "receipt": "RCV-016", "store": "Mercury Drug", "category": "Meds", "date": "May 15, 2025", "amount": 98.50, "warranty": "Active" },
+  { "id": 17, "receipt": "RCV-017", "store": "Southstar Drug", "category": "Meds", "date": "February 10, 2025", "amount": 299.99, "warranty": "Expired" },
+  { "id": 18, "receipt": "RCV-018", "store": "Watsons", "category": "Beauty", "date": "January 30, 2025", "amount": 1200.00, "warranty": "Active" },
+  { "id": 19, "receipt": "RCV-019", "store": "Mercury Drug", "category": "Device", "date": "June 1, 2025", "amount": 3100.00, "warranty": "Active" },
+  { "id": 20, "receipt": "RCV-020", "store": "Southstar Drug", "category": "Beauty", "date": "March 18, 2025", "amount": 245.50, "warranty": "Expiring" }
 ]

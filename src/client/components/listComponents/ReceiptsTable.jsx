@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
-import './colors.css'
+import React from 'react';
+import './colors.css';
 import './ReceiptsTable.css';
+import { PaginationButtons } from './PaginationButtons';
+import { usePagination } from '../../hooks/usePagination';
 
-export const ReceiptsTable = ({ data }) => {
+export const ReceiptsTable = ({ data, itemLimit = 10 }) => {  
   const receipts = data || [];
+  const itemsPerPage = itemLimit;  
+  
+  const {
+    currentData,
+    currentPage,
+    totalPages,
+    goToPage
+  } = usePagination(receipts, itemsPerPage);
+
+  const startItem = (currentPage - 1) * itemsPerPage + 1;
+  const endItem = Math.min(currentPage * itemsPerPage, receipts.length);
 
   return (
     <div id="receipts-table-container" className="receipts-table-container">
+      
       <table id="receipts-table" className="receipts-table" border="1">
         <thead id="table-header" className="table-header">
           <tr id="header-row" className="header-row">
@@ -20,7 +34,7 @@ export const ReceiptsTable = ({ data }) => {
           </tr>
         </thead>
         <tbody id="table-body" className="table-body">
-          {receipts.map((receipt) => (
+          {currentData.map((receipt) => (
             <tr id={`receipt-row-${receipt.id}`} key={receipt.id} className="receipt-row">
               <td id={`receipt-cell-${receipt.id}`} className="receipt-cell">{receipt.receipt}</td>
               
@@ -55,6 +69,12 @@ export const ReceiptsTable = ({ data }) => {
           ))}
         </tbody>
       </table>
+      
+      <PaginationButtons
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={goToPage}
+      />
     </div>
   );
 };

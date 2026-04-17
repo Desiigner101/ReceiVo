@@ -71,7 +71,7 @@ const HomePage = ({ activePage, onNavigate }) => {
               <h2 className="receipts-title">Recent Receipts</h2>
               <a className="receipts-viewall" href="#">View All →</a>
             </div>
-            <ReceiptsTable data={mockReceipts} />
+            <ReceiptsTable data={mockReceipts} itemLimit={5} />
           </div>
 
         </div>
