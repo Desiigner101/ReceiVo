@@ -22,6 +22,7 @@ declare global {
                     {
                         table: 'sys_ui_page'
                         id: '6c37cb0f93c48b10612632edfaba103b'
+                        deleted: false
                         key: {
                             endpoint: 'x_1984201_receivo_vault_page.do'
                         }
