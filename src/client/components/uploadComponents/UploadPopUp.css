@@ -170,3 +170,93 @@ label {
 .submit-button:hover {
   background-color: #00a896;
 }
+
+.form-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #00BFA5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 16px 0;
+}
+
+.radio-group, .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.radio-label, .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #444;
+  cursor: pointer;
+}
+
+.field-error {
+  color: #e53935;
+  font-size: 11px;
+  margin: 4px 0 0 0;
+}
+
+.tags-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.tag-chip {
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+}
+
+.tag-chip-active {
+  background-color: #e0f7f4;
+  border-color: #00BFA5;
+  color: #00BFA5;
+  font-weight: 700;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.add-tag-btn {
+  padding: 8px 16px;
+  background-color: #00BFA5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.form-container {
+  max-height: 90vh;
+  overflow-y: auto;
+}
