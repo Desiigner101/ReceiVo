@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './colors.css'
 import './ReceiptsTable.css';
 
 export const ReceiptsTable = ({ data, onView }) => {

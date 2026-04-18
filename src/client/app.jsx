@@ -19,24 +19,42 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetch(RECEIPT_API)
+    fetch(RECEIPT_API, {
+      headers: { 'Accept': 'application/json' }
+    })
       .then(res => res.json())
-      .then(data => { setReceipts(data); setLoading(false); })
-      .catch(() => setLoading(false))
+      .then(data => {
+        // Handle both array and object responses
+        const list = Array.isArray(data) ? data : (data.result || [])
+        setReceipts(list)
+        setLoading(false)
+      })
+      .catch(() => {
+        setReceipts([])
+        setLoading(false)
+      })
   }, [])
 
   const addReceipt = (newReceipt) => {
     fetch(RECEIPT_API, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
       body: JSON.stringify(newReceipt)
     })
       .then(res => res.json())
       .then(data => {
-        setReceipts(prev => [{ ...newReceipt, id: data.id }, ...prev])
+        console.log('API response:', data) // ← add this
+        const id = data.id || data.result?.id || Date.now()
+        setReceipts(prev => [{ ...newReceipt, id }, ...prev])
         showToast('Receipt saved successfully!')
       })
-      .catch(() => showToast('Failed to save receipt.', 'error'))
+      .catch(err => {
+        console.log('API error:', err) // ← add this
+        showToast('Failed to save receipt.', 'error')
+      })
   }
 
   if (loading) return (

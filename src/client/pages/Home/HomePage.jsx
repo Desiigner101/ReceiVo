@@ -8,6 +8,7 @@ import UploadPopUp from '../../components/uploadComponents/UploadPopUp';
 import { ReceiptsTable } from '../../components/listComponents/ReceiptsTable';
 
 const HomePage = ({ activePage, onNavigate, receipts, onAddReceipt }) => {
+  const [showUpload, setShowUpload] = useState(false);
 
   const totalReceipts = receipts.length;
   const activeWarranties = receipts.filter(r => r.warranty === 'Active').length;
@@ -67,7 +68,7 @@ const HomePage = ({ activePage, onNavigate, receipts, onAddReceipt }) => {
               <h2 className="receipts-title">Recent Receipts</h2>
               <a className="receipts-viewall" href="#">View All →</a>
             </div>
-            <ReceiptsTable data={receipts} />
+            <ReceiptsTable data={receipts} itemLimit={5} />
           </div>
 
         </div>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import './WarrantyTable.css'
-import './colors.css'
 
 export const WarrantyTable = ({ data, onView }) => {
     const [warranties, setWarranties] = useState(data || [])

@@ -189,12 +189,17 @@ const UploadPopUp = ({ onClose, onAddReceipt }) => {
 
     const finalStore = store === 'Other' ? otherStore : store;
     const finalBrand = brand === 'Other' ? otherBrand : brand;
-
+    const getCategoryPill = (cat) => {
+      if (cat === 'Electronics / Appliance with Warranty') return 'Device'
+      if (cat === 'Medicine / Pharmacy') return 'Meds'
+      return cat
+    }
+    
     const newReceipt = {
       id: Date.now(),
       receipt: `#RCV-${String(Date.now()).slice(-4)}`,
       store: finalStore,
-      category: category,
+      category: getCategoryPill(category), 
       date: new Date(purchaseDate).toLocaleDateString('en-US', {
         year: 'numeric', month: 'long', day: '2-digit'
       }),

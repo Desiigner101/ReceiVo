@@ -1,43 +1,65 @@
 .vault-wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    overflow: hidden;
-    background-color: #f9f9f9;
-    font-family: 'Montserrat', system-ui, sans-serif;
-  }
-  
-  .vault-body {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-  }
-  
-  .vault-main {
-    flex: 1;
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    overflow-y: auto;
-  }
-  
-  .vault-title {
-    font-size: 28px;
-    font-weight: 700;
-    color: #222;
-    margin: 0;
-  }
-  
-  .vault-subtitle {
-    font-size: 13px;
-    color: #aaaaaa;
-    margin: 4px 0 0 0;
-  }
-  
-  .vault-content {
-    background-color: #ffffff;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    padding: 24px;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f9f9f9;
+  font-family: 'Montserrat', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+.vault-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.vault-main {
+  flex: 1;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: scroll;
+  min-height: 0;
+}
+
+.vault-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #222;
+  margin: 0;
+}
+
+.vault-subtitle {
+  font-size: 13px;
+  color: #aaaaaa;
+  margin: 0;
+}
+
+.vault-content {
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  padding: 24px;
+}
+
+.scroll-top-btn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #00BFA5;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 191, 165, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}

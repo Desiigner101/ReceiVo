@@ -1,8 +1,7 @@
 .notif-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  overflow: hidden;
+  height: 100vh;
   background-color: #f9f9f9;
   font-family: 'Montserrat', system-ui, sans-serif;
 }
@@ -11,8 +10,8 @@
   display: flex;
   flex: 1;
   overflow: hidden;
+  min-height: 0;
 }
-
 /* ── SIDEBAR ── */
 .notif-sidebar {
   width: 140px;
@@ -22,6 +21,7 @@
   flex-direction: column;
   gap: 8px;
   border-right: 1px solid #e0e0e0;
+  overflow-y: auto;
 }
 
 .notif-logo {
@@ -88,11 +88,12 @@
 /* ── MAIN CONTENT ── */
 .notif-main {
   flex: 1;
-  padding: 32px; 
+  padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: 24px; 
-  overflow-y: auto; 
+  gap: 24px;
+  overflow-y: scroll;
+  min-height: 0;
 }
 
 .notif-card {

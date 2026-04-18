@@ -1,14 +1,11 @@
 .navbar {
   width: 180px;
-  height: calc(100vh - 73px); /* subtract topbar height */
-  position: sticky;
-  top: 73px; /* same as topbar height */
+  flex-shrink: 0;
   padding: 24px 12px;
   background-color: #ffffff;
   border-right: 1px solid #e0e0e0;
   box-sizing: border-box;
   overflow-y: auto;
-  flex-shrink: 0;
 }
 
 .navbar-title {
