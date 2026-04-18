@@ -1,47 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './NotificationPage.css';
 import TopBar from '../../components/globalComponents/TopBar';
 import NavigationBar from '../../components/globalComponents/NavigationBar';
 import Alert from '../../components/notificationComponents/Alert';
-
-const mockWarrantyNotifs = [
-  {
-    id: 1,
-    type: 'warning',
-    title: 'Warranty Expiring Soon',
-    desc: 'Blood Pressure Monitor expires in 32 days (May 10, 2026)',
-    time: 'Apr 8, 2026 · 9:00 AM · via Flow Designer',
-    unread: true,
-  },
-  {
-    id: 2,
-    type: 'warning',
-    title: 'Warranty Expiring Soon',
-    desc: 'Digital Thermometer expires in 12 days (Apr 20, 2026)',
-    time: 'Apr 8, 2026 · 8:00 AM · via Flow Designer',
-    unread: true,
-  },
-  {
-    id: 3,
-    type: 'success',
-    title: 'Receipt Uploaded Successfully',
-    desc: '#RCV-0024 from Mercury Drug has been saved to your vault.',
-    time: 'Apr 6, 2026 · 3:21 PM',
-    unread: false,
-  },
-  {
-    id: 4,
-    type: 'success',
-    title: 'Receipt Uploaded Successfully',
-    desc: '#RCV-0023 from Watsons has been saved to your vault.',
-    time: 'Apr 3, 2026 · 1:14 PM',
-    unread: false,
-  },
-];
+import { fetchNotifications, markAllAsRead } from '../../api/notificationService';
 
 const NotificationPage = ({ activePage, onNavigate }) => {
   const [activeTab, setActiveTab] = useState('all');
-  const [notifications, setNotifications] = useState(mockWarrantyNotifs);
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadData = async (isInitialLoad = false) => {
+    // Only show the loading screen on the very first load to prevent UI blinking
+    if (isInitialLoad) setLoading(true);
+    
+    const data = await fetchNotifications();
+    setNotifications(data);
+    
+    if (isInitialLoad) setLoading(false);
+  };
+
+  // --- PHASE 4: Real-Time Polling ---
+  useEffect(() => {
+    // 1. Initial Load
+    loadData(true);
+
+    // 2. Start polling every 10 seconds (10000 ms)
+    const pollInterval = setInterval(() => {
+      loadData(false);
+    }, 10000);
+
+    // 3. Cleanup the interval if the user navigates away from the page
+    return () => clearInterval(pollInterval);
+  }, []);
 
   const unreadCount = notifications.filter(n => n.unread).length;
 
@@ -51,15 +42,24 @@ const NotificationPage = ({ activePage, onNavigate }) => {
     return true;
   });
 
-  const markAllRead = () => {
+  // --- PHASE 5: Mark as Read in Database ---
+  const markAllRead = async () => {
+    // 1. Get all IDs that are currently unread
+    const unreadIds = notifications.filter(n => n.unread).map(n => n.id);
+    if (unreadIds.length === 0) return;
+
+    // 2. Optimistic UI Update (Instantly clear the badges so it feels snappy)
     setNotifications(notifications.map(n => ({ ...n, unread: false })));
+
+    // 3. Update the ServiceNow database in the background
+    await markAllAsRead(unreadIds);
   };
 
   return (
     <div className="notif-wrapper">
       <TopBar />
       <div className="notif-body">
-        <NavigationBar activePage={activePage} onNavigate={onNavigate} />
+        <NavigationBar activePage={activePage} onNavigate={onNavigate} unreadCount={unreadCount} />
 
         <div className="notif-main">
           <div className="notif-card">
@@ -70,18 +70,7 @@ const NotificationPage = ({ activePage, onNavigate }) => {
                 <p className="notif-subtitle">{unreadCount} unread alert{unreadCount !== 1 ? 's' : ''}</p>
               </div>
               <div className="notif-action-buttons">
-                <button
-                  className={`notif-btn ${activeTab === 'unread' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('unread')}
-                >
-                  Unread
-                </button>
-                <button
-                  className={`notif-btn ${activeTab === 'read' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('read')}
-                >
-                  Read
-                </button>
+                {/* Redundant buttons removed as requested! */}
                 <button className="notif-btn primary" onClick={markAllRead}>
                   Mark All Read
                 </button>
@@ -109,7 +98,11 @@ const NotificationPage = ({ activePage, onNavigate }) => {
               </button>
             </div>
 
-            {filteredNotifs.length === 0 ? (
+            {loading ? (
+              <div className="notif-empty">
+                <p className="notif-empty-text">Loading notifications...</p>
+              </div>
+            ) : filteredNotifs.length === 0 ? (
               <div className="notif-empty">
                 <div className="notif-empty-icon">🔔</div>
                 <p className="notif-empty-text">No notifications</p>

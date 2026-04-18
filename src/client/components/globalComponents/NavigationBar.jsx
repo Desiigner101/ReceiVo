@@ -1,12 +1,15 @@
 import React from 'react';
 import './NavigationBar.css';
 
-const NavigationBar = ({ activePage, onNavigate }) => {
+// 1. Add unreadCount as a prop here (defaulting to 0)
+const NavigationBar = ({ activePage, onNavigate, unreadCount = 0 }) => {
   const navItems = [
     { label: 'Home', icon: '⊞' },
     { label: 'Vault', icon: '🛡' },
     { label: 'Warranty', icon: '⬡' },
-    { label: 'Notification', icon: '🔔', badge: 2 },
+    // 2. Replace the hardcoded '2' with our dynamic unreadCount
+    // This also hides the badge completely if the count is 0!
+    { label: 'Notification', icon: '🔔', badge: unreadCount > 0 ? unreadCount : null },
   ];
 
   return (
