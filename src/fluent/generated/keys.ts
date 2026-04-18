@@ -13,9 +13,24 @@ declare global {
                         table: 'sys_security_acl'
                         id: 'ed1e4f8b93088b10612632edfaba10c7'
                     }
+                    'incident-manager-page': {
+                        table: 'sys_ui_page'
+                        id: 'b9e7aae1a15c4f14937204510be68ef9'
+                        deleted: true
+                    }
                     package_json: {
                         table: 'sys_module'
                         id: '8e4e46e3bc3047a6b0274a28dde41eb6'
+                    }
+                    'x_1984201_receivo/main': {
+                        table: 'sys_ux_lib_asset'
+                        id: 'fdb36ac625df4fc48ebe67276769399c'
+                        deleted: true
+                    }
+                    'x_1984201_receivo/main.js.map': {
+                        table: 'sys_ux_lib_asset'
+                        id: '68240727ec1c42fe9417e7e415a21698'
+                        deleted: true
                     }
                 }
                 composite: [
@@ -43,6 +58,7 @@ declare global {
                     {
                         table: 'sys_ux_lib_asset'
                         id: 'ab275b4d84c04b65aa619bfda7363e08'
+                        deleted: false
                         key: {
                             name: 'x_1984201_receivo/main'
                         }
@@ -50,6 +66,7 @@ declare global {
                     {
                         table: 'sys_ux_lib_asset'
                         id: 'ac2c9f8fab584b1cbdc180b5629d7a03'
+                        deleted: false
                         key: {
                             name: 'x_1984201_receivo/main.js.map'
                         }
@@ -64,6 +81,7 @@ declare global {
                     {
                         table: 'sys_ui_page'
                         id: 'c8e14627e3ab4b53a16081b5f4bbbc5e'
+                        deleted: false
                         key: {
                             endpoint: 'x_1984201_receivo_incident_manager.do'
                         }

@@ -1,0 +1,32 @@
+.claim-type-list,
+.tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.claim-pill {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #eef4ff;
+    color: #4a6fa5;
+}
+
+.tag-pill {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #f3f0ff;
+    color: #6c5fc7;
+}
+
+.receipt-notes {
+    font-size: 14px;
+    color: #666;
+    margin: 8px 0 0 0;
+    line-height: 1.6;
+}

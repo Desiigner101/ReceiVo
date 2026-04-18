@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import './colors.css'
 import './ReceiptsTable.css';
 
-export const ReceiptsTable = ({ data }) => {
+export const ReceiptsTable = ({ data, onView }) => {
   const receipts = data || [];
 
   return (
@@ -46,7 +45,11 @@ export const ReceiptsTable = ({ data }) => {
               
               <td id={`action-cell-${receipt.id}`} className="action-cell">
                 <div id={`action-buttons-${receipt.id}`} className="action-buttons">
-                  <button id={`view-btn-${receipt.id}`} className="btn btn-view">👁</button>
+                  <button 
+                    id={`view-btn-${receipt.id}`} 
+                    className="btn btn-view"
+                    onClick={() => onView && onView(receipt)}
+                  >👁</button>
                   <button id={`edit-btn-${receipt.id}`} className="btn btn-edit">✎</button>
                   <button id={`delete-btn-${receipt.id}`} className="btn btn-delete">🗑</button>
                 </div>
