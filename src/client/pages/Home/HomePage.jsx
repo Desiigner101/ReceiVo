@@ -4,9 +4,8 @@ import TopBar from '../../components/globalComponents/TopBar';
 import NavigationBar from '../../components/globalComponents/NavigationBar';
 import Button from '../../components/globalComponents/Button';
 import KPI from '../../components/displayComponents/KPI';
-import UploadPopUp from '../../components/uploadComponents/UploadPopUp';
 import { ReceiptsTable } from '../../components/listComponents/ReceiptsTable';
-
+import UploadPopUp_back from '../../components/uploadComponents/UploadPopUp_back';
 const HomePage = ({ activePage, onNavigate, receipts, onAddReceipt }) => {
   const [showUpload, setShowUpload] = useState(false);
 
@@ -75,8 +74,7 @@ const HomePage = ({ activePage, onNavigate, receipts, onAddReceipt }) => {
       </div>
 
       {showUpload && (
-        <UploadPopUp onClose={() => setShowUpload(false)} onAddReceipt={onAddReceipt} />
-      )}
+        <UploadPopUp_back onClose={() => setShowUpload(false)} />      )}
 
     </div>
   );
