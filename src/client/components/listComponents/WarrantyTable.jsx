@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './WarrantyTable.css'
 import './colors.css'
 
-export const WarrantyTable = ({ data }) => {
+export const WarrantyTable = ({ data, onView }) => {
     const [warranties, setWarranties] = useState(data || [])
 
     const activeCount = warranties.filter(w => w.status === 'Active').length
@@ -88,14 +88,15 @@ export const WarrantyTable = ({ data }) => {
                                 </td>
                                 <td>
                                     <div className="warranty-action-buttons">
-                                        <button className="warranty-btn-action">👁</button>
+                                        <button 
+                                            className="warranty-btn-action"
+                                            onClick={() => onView && onView(warranty)}
+                                        >👁</button>
                                         <button className="warranty-btn-action">✎</button>
                                         <button
                                             className="warranty-btn-action warranty-btn-delete"
                                             onClick={() => handleDelete(warranty.id)}
-                                        >
-                                            🗑
-                                        </button>
+                                        >🗑</button>
                                     </div>
                                 </td>
                             </tr>

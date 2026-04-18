@@ -6,7 +6,18 @@
     "category": "Meds", 
     "date": "January 15, 2025", 
     "amount": 450.50, 
-    "warranty": "Active" 
+    "warranty": "Active",
+    "currency": "PHP",
+    "invoiceNumber": "INV-2025-001",
+    "purpose": "Personal medication purchase",
+    "claimType": ["For Warranty Claim", "For PhilHealth Reimbursement"],
+    "tags": ["#Medicine", "#PersonalUse"],
+    "notes": "Monthly maintenance meds from Mercury Drug",
+    "notifications": {
+      "warrantyAlert7Days": true,
+      "returnWindowAlert3Days": true,
+      "philhealthAlert14Days": false
+    }
   },
   { 
     "id": 2, 
@@ -15,7 +26,18 @@
     "category": "Device", 
     "date": "February 20, 2025", 
     "amount": 1299.99, 
-    "warranty": "Active" 
+    "warranty": "Active",
+    "currency": "PHP",
+    "invoiceNumber": "INV-2025-002",
+    "purpose": "Medical device for home use",
+    "claimType": ["For Warranty Claim", "For HMO Reimbursement"],
+    "tags": ["#Medicine", "#HomeOffice"],
+    "notes": "Blood pressure monitor with 1 year warranty",
+    "notifications": {
+      "warrantyAlert7Days": true,
+      "returnWindowAlert3Days": true,
+      "philhealthAlert14Days": true
+    }
   },
   { 
     "id": 3, 
@@ -24,7 +46,18 @@
     "category": "Meds", 
     "date": "March 10, 2025", 
     "amount": 350.75, 
-    "warranty": "Expiring" 
+    "warranty": "Expiring",
+    "currency": "PHP",
+    "invoiceNumber": "INV-2025-003",
+    "purpose": "Prescription medication",
+    "claimType": ["For PhilHealth Reimbursement", "For HMO Reimbursement"],
+    "tags": ["#Medicine", "#Surgery"],
+    "notes": "Post-surgery prescription, warranty expiring soon",
+    "notifications": {
+      "warrantyAlert7Days": true,
+      "returnWindowAlert3Days": false,
+      "philhealthAlert14Days": true
+    }
   },
   { 
     "id": 4, 
@@ -33,7 +66,18 @@
     "category": "Device", 
     "date": "December 5, 2024", 
     "amount": 2500.00, 
-    "warranty": "Expired" 
+    "warranty": "Expired",
+    "currency": "PHP",
+    "invoiceNumber": "INV-2024-004",
+    "purpose": "Medical equipment purchase",
+    "claimType": ["Just Keeping for Records"],
+    "tags": ["#PersonalUse"],
+    "notes": "Warranty already expired",
+    "notifications": {
+      "warrantyAlert7Days": false,
+      "returnWindowAlert3Days": false,
+      "philhealthAlert14Days": false
+    }
   },
   { 
     "id": 5, 
@@ -42,6 +86,17 @@
     "category": "Meds", 
     "date": "April 8, 2025", 
     "amount": 125.25, 
-    "warranty": "Active" 
+    "warranty": "Active",
+    "currency": "PHP",
+    "invoiceNumber": "INV-2025-005",
+    "purpose": "Over the counter medication",
+    "claimType": ["For Store Return / Refund", "Just Keeping for Records"],
+    "tags": ["#Medicine", "#PersonalUse"],
+    "notes": "OTC meds, keeping for records",
+    "notifications": {
+      "warrantyAlert7Days": true,
+      "returnWindowAlert3Days": true,
+      "philhealthAlert14Days": false
+    }
   }
 ]

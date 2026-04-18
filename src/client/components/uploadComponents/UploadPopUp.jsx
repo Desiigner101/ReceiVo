@@ -53,7 +53,7 @@ const UploadPopUp = ({ onClose, onAddReceipt }) => {
   // Section 1
   const [files, setFiles] = useState([]);
   const [photoConfirmed, setPhotoConfirmed] = useState(false);
-
+  const [previewUrl, setPreviewUrl] = useState(null);
   // Section 2
   const [store, setStore] = useState('');
   const [otherStore, setOtherStore] = useState('');
@@ -91,23 +91,26 @@ const UploadPopUp = ({ onClose, onAddReceipt }) => {
   // ── Handlers ──
 
   const handleFileChange = (e) => {
-    const selected = Array.from(e.target.files);
-    const valid = selected.filter(f => f.size <= 20 * 1024 * 1024);
-    const invalid = selected.filter(f => f.size > 20 * 1024 * 1024);
-    if (invalid.length > 0) {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 20 * 1024 * 1024) {
       setErrors(prev => ({ ...prev, files: 'File too large. Please compress or upload a smaller image.' }));
-    } else {
-      setErrors(prev => ({ ...prev, files: null }));
+      return;
     }
-    setFiles(valid);
+    setErrors(prev => ({ ...prev, files: null }));
+    setFiles([file]);
+    setPreviewUrl(URL.createObjectURL(file));
   };
 
   const handleDragOver = (e) => e.preventDefault();
 
   const handleDrop = (e) => {
     e.preventDefault();
-    const dropped = Array.from(e.dataTransfer.files);
-    setFiles(dropped);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      setFiles([file]);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
   };
 
   const toggleClaimType = (type) => {
@@ -239,18 +242,21 @@ const UploadPopUp = ({ onClose, onAddReceipt }) => {
               onDrop={handleDrop}
               onClick={() => document.getElementById('file-input').click()}
             >
-              <div className="upload-icon">↑</div>
-              <p className="upload-text">Attach receipt image</p>
-              <p className="upload-subtext">JPG, PNG, PDF, HEIC — max 20MB. Multiple files supported.</p>
-              {files.length > 0 && files.map((f, i) => (
-                <p key={i} className="upload-filename">📎 {f.name}</p>
-              ))}
+              {previewUrl ? (
+                <img src={previewUrl} alt="Receipt preview" className="upload-preview" />
+              ) : (
+                <>
+                  <div className="upload-icon">↑</div>
+                  <p className="upload-text">Attach receipt image</p>
+                  <p className="upload-subtext">JPG, PNG, HEIC only — max 20MB</p>
+                </>
+              )}
+              {files.length > 0 && <p className="upload-filename">📎 {files[0].name}</p>}
               <input
                 id="file-input"
                 type="file"
-                accept=".png,.jpg,.jpeg,.heic,.pdf"
+                accept=".png,.jpg,.jpeg,.heic"  // no PDF
                 style={{ display: 'none' }}
-                multiple
                 onChange={handleFileChange}
               />
             </div>

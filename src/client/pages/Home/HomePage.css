@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    overflow: hidden;
     background-color: #f9f9f9;
     font-family: 'Montserrat', system-ui, sans-serif;
   }
@@ -9,6 +10,7 @@
   .homepage-body {
     display: flex;
     flex: 1;
+    overflow: hidden;
   }
   
   .homepage-main {
@@ -17,6 +19,7 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
+    overflow-y: auto;
   }
   
   .homepage-header {
