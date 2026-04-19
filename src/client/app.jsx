@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import HomePage from './pages/Home/HomePage'
 import VaultPage from './pages/Vault/VaultPage'
-import WarrantyPage from './pages/Warranty/WarrantyPage'
 import NotificationPage from './pages/Notification/NotificationPage'
 import Toast from './components/globalComponents/Toast'
-import './app.css'
+import { fetchReceipts } from './api/receiptService'
 
-const RECEIPT_API = '/api/1984201/receipt'
+import './app.css'
 
 export default function App() {
   const [activePage, setActivePage] = useState('Home')
@@ -19,13 +18,8 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetch(RECEIPT_API, {
-      headers: { 'Accept': 'application/json' }
-    })
-      .then(res => res.json())
-      .then(data => {
-        // Handle both array and object responses
-        const list = Array.isArray(data) ? data : (data.result || [])
+    fetchReceipts()
+      .then(list => {
         setReceipts(list)
         setLoading(false)
       })
@@ -35,26 +29,16 @@ export default function App() {
       })
   }, [])
 
-  const addReceipt = (newReceipt) => {
-    fetch(RECEIPT_API, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(newReceipt)
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log('API response:', data) // ← add this
-        const id = data.id || data.result?.id || Date.now()
-        setReceipts(prev => [{ ...newReceipt, id }, ...prev])
-        showToast('Receipt saved successfully!')
-      })
-      .catch(err => {
-        console.log('API error:', err) // ← add this
-        showToast('Failed to save receipt.', 'error')
-      })
+  const addReceipt = () => {
+    fetchReceipts()
+      .then(list => setReceipts(list))
+      .catch(() => {})
+    showToast('Receipt saved successfully!')
+  }
+
+  const deleteReceiptFromState = (sysId) => {
+    setReceipts(prev => prev.filter(r => (r.sys_id || r.id) !== sysId));
+    showToast('Receipt deleted successfully!', 'success');
   }
 
   if (loading) return (
@@ -62,17 +46,14 @@ export default function App() {
       Loading...
     </div>
   )
-
   const renderPage = () => {
     switch (activePage) {
-      case 'Home':         return <HomePage activePage={activePage} onNavigate={setActivePage} receipts={receipts} onAddReceipt={addReceipt} />
-      case 'Vault':        return <VaultPage activePage={activePage} onNavigate={setActivePage} receipts={receipts} />
-      case 'Warranty':     return <WarrantyPage activePage={activePage} onNavigate={setActivePage} />
+      case 'Home':         return <HomePage activePage={activePage} onNavigate={setActivePage} receipts={receipts} onAddReceipt={addReceipt} onDelete={deleteReceiptFromState} />
+      case 'Vault':        return <VaultPage activePage={activePage} onNavigate={setActivePage} receipts={receipts} onDelete={deleteReceiptFromState} />
       case 'Notification': return <NotificationPage activePage={activePage} onNavigate={setActivePage} />
-      default:             return <HomePage activePage={activePage} onNavigate={setActivePage} receipts={receipts} onAddReceipt={addReceipt} />
+      default:             return <HomePage activePage={activePage} onNavigate={setActivePage} receipts={receipts} onAddReceipt={addReceipt} onDelete={deleteReceiptFromState} />
     }
   }
-
   return (
     <>
       {renderPage()}

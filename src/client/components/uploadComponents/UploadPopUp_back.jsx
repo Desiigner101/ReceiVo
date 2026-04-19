@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './UploadPopUp.css';
 import { addReceiptWithImage } from '../../api/receiptService';
+
 const STORES = [
   'Mercury Drug', 'Watsons', 'SM Appliance', 'Abenson', 'Power Mac Center',
   'The Medical City', "St. Luke's", 'Generika', 'Southstar Drug', 'Ace Hardware',
@@ -20,11 +21,7 @@ const WARRANTY_DURATIONS = [
 
 const CURRENCIES = ['PHP', 'USD', 'EUR', 'JPY', 'SGD', 'AUD', 'GBP', 'CAD', 'HKD', 'KRW'];
 
-const PRESET_TAGS = [
-  '#TaxDeductible', '#Gift', '#HomeOffice', '#PersonalUse',
-  '#BusinessTravel', '#Medicine', '#Groceries', '#Surgery', '#Dental', '#Optical'
-];
-
+// These are the exact strings saved to u_category in the database
 const CATEGORIES = [
   'General Purchase / Return',
   'Medicine / Pharmacy',
@@ -48,6 +45,7 @@ const NOTIFICATION_PREFS = [
   'Alert me 3 days before return window closes',
   'Alert me 14 days before PhilHealth/HMO filing deadline'
 ];
+
 const WARRANTY_DURATION_DAYS_MAP = {
   '7 Days (Replacement Only)': 7,
   '15 Days': 15,
@@ -60,12 +58,12 @@ const WARRANTY_DURATION_DAYS_MAP = {
   '10 Years (Compressor/Motor)': 3650,
   'Lifetime Warranty': 36500,
 };
+
 const UploadPopUp = ({ onClose, onAddReceipt }) => {
-  // Section 1
   const [files, setFiles] = useState([]);
   const [photoConfirmed, setPhotoConfirmed] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
-  // Section 2
+
   const [store, setStore] = useState('');
   const [otherStore, setOtherStore] = useState('');
   const [purchaseDate, setPurchaseDate] = useState('');
@@ -73,11 +71,9 @@ const UploadPopUp = ({ onClose, onAddReceipt }) => {
   const [currency, setCurrency] = useState('PHP');
   const [invoiceNumber, setInvoiceNumber] = useState('');
 
-  // Section 3
   const [category, setCategory] = useState('');
   const [claimTypes, setClaimTypes] = useState([]);
 
-  // Section 4 (conditional)
   const [productName, setProductName] = useState('');
   const [brand, setBrand] = useState('');
   const [otherBrand, setOtherBrand] = useState('');
@@ -88,18 +84,10 @@ const UploadPopUp = ({ onClose, onAddReceipt }) => {
   const [customDurationUnit, setCustomDurationUnit] = useState('Days');
   const [warrantyEndDate, setWarrantyEndDate] = useState('');
 
-  // Section 7
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [customTag, setCustomTag] = useState('');
-  const [notes, setNotes] = useState('');
-  const [additionalFiles, setAdditionalFiles] = useState([]);
   const [notificationPrefs, setNotificationPrefs] = useState([]);
-
   const [errors, setErrors] = useState({});
 
   const isElectronics = category === 'Electronics / Appliance with Warranty';
-
-  // ── Handlers ──
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -130,58 +118,34 @@ const UploadPopUp = ({ onClose, onAddReceipt }) => {
     );
   };
 
-  const toggleTag = (tag) => {
-    setSelectedTags(prev =>
-      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
-    );
-  };
-
-  const addCustomTag = () => {
-    if (customTag && customTag.length <= 20 && !selectedTags.includes(`#${customTag}`)) {
-      setSelectedTags(prev => [...prev, `#${customTag}`]);
-      setCustomTag('');
-    }
-  };
-
   const toggleNotifPref = (pref) => {
     setNotificationPrefs(prev =>
       prev.includes(pref) ? prev.filter(p => p !== pref) : [...prev, pref]
     );
   };
 
-  // ── Validation ──
-
   const validate = () => {
     const newErrors = {};
 
-    // V-1
     if (!purchaseDate) {
       newErrors.purchaseDate = 'Purchase date is required.';
     } else if (new Date(purchaseDate) > new Date()) {
       newErrors.purchaseDate = 'Purchase date must be today or earlier.';
     }
 
-    // V-2
     if (!amount || parseFloat(amount) <= 0) {
       newErrors.amount = 'Please enter a valid amount.';
     }
 
-    // V-3
     if (isElectronics && !productName.trim()) {
       newErrors.productName = 'Product name/model is required for warranty tracking.';
     }
 
-    // V-6
     if (warrantyEndDate && purchaseDate && new Date(warrantyEndDate) < new Date(purchaseDate)) {
       newErrors.warrantyEndDate = 'Warranty end date must be after purchase date.';
     }
 
-    // V-7
-    if (errors.files) {
-      newErrors.files = errors.files;
-    }
-
-    // Required fields
+    if (errors.files) newErrors.files = errors.files;
     if (!store) newErrors.store = 'Please select a store.';
     if (!category) newErrors.category = 'Please select a category.';
     if (claimTypes.length === 0) newErrors.claimTypes = 'Please select at least one claim type.';
@@ -193,70 +157,54 @@ const UploadPopUp = ({ onClose, onAddReceipt }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // ── Submit ──
   const handleSubmit = async () => {
     if (!validate()) return;
-  
+
     const finalStore = store === 'Other' ? otherStore : store;
     const finalBrand = brand === 'Other' ? otherBrand : brand;
-  
-    const getCategoryPill = (cat) => {
-      if (cat === 'Electronics / Appliance with Warranty') return 'Device';
-      if (cat === 'Medicine / Pharmacy') return 'Meds';
-      return cat;
-    };
-  
+
     const payload = {
-      u_amount: parseFloat(amount),
-      u_brand: isElectronics ? finalBrand : undefined,
-      u_category: getCategoryPill(category),
-      u_store: finalStore,
-      u_purchase_date: purchaseDate,
+      u_amount:         parseFloat(amount),
+      u_category:       category,          // ← full name stored as-is, e.g. 'Medicine / Pharmacy'
+      u_store:          finalStore,
+      u_purchase_date:  purchaseDate,
       u_receipt_number: invoiceNumber,
       u_invoice_number: invoiceNumber,
-    
-      u_product_name: isElectronics ? productName : undefined,
-      u_serial_number: isElectronics ? serialNumber : undefined,
-    
+
+      u_brand:          isElectronics ? finalBrand   : undefined,
+      u_product_name:   isElectronics ? productName  : undefined,
+      u_serial_number:  isElectronics ? serialNumber : undefined,
       u_warranty_provider: isElectronics ? warrantyProvider : undefined,
-    
+
       ...(isElectronics && warrantyDuration ? {
         u_warranty_duration_days:
           warrantyDuration === 'Custom'
             ? parseInt(customDurationValue || 0)
             : WARRANTY_DURATION_DAYS_MAP[warrantyDuration] ?? undefined,
       } : {}),
-    
-      u_warranty_end_date: isElectronics ? warrantyEndDate : undefined,
-    
-      u_tags: JSON.stringify(selectedTags),
-      u_intended_claim_type: JSON.stringify(claimTypes),  
-      u_notes: notes,
-      u_notification_rules: JSON.stringify(notificationPrefs), 
+
+      u_warranty_end_date:    isElectronics ? warrantyEndDate : undefined,
+      u_intended_claim_type:  JSON.stringify(claimTypes),
+      u_notification_rules:   JSON.stringify(notificationPrefs),
     };
-    
+
+    // Strip undefined / null / empty-string fields before sending
     const cleanPayload = Object.fromEntries(
-      Object.entries(payload).filter(
-        ([_, v]) => v !== null && v !== undefined && v !== ''
-      )
+      Object.entries(payload).filter(([, v]) => v !== null && v !== undefined && v !== '')
     );
-  
+
     try {
-      const result = await addReceiptWithImage(payload, files?.[0]);
-  
+      const result = await addReceiptWithImage(cleanPayload, files?.[0]);
       if (result.success) {
         console.log('Saved:', result.sysId);
-  
         onClose();
       } else {
         console.error(result.error);
       }
-  
     } catch (err) {
       console.error('Submit failed:', err);
     }
   };
-  // ── Render ──
 
   return (
     <div className="form-overlay" onClick={onClose}>
@@ -291,13 +239,12 @@ const UploadPopUp = ({ onClose, onAddReceipt }) => {
               <input
                 id="file-input"
                 type="file"
-                accept=".png,.jpg,.jpeg,.heic"  // no PDF
+                accept=".png,.jpg,.jpeg,.heic"
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
               />
             </div>
             {errors.files && <p className="field-error">{errors.files}</p>}
-
             {files.length > 0 && (
               <label className="checkbox-label">
                 <input
@@ -493,43 +440,8 @@ const UploadPopUp = ({ onClose, onAddReceipt }) => {
             </div>
           )}
 
-          {/* ── SECTION 7: Tags, Notes & Notifications ── */}
+          {/* ── SECTION 5: Notification Preferences ── */}
           <div className="form-section">
-            <h3 className="section-title">Tags & Notes</h3>
-
-            <div className="form-group">
-              <label>Tags / Labels</label>
-              <div className="tags-group">
-                {PRESET_TAGS.map(tag => (
-                  <button key={tag} type="button"
-                    className={`tag-chip ${selectedTags.includes(tag) ? 'tag-chip-active' : ''}`}
-                    onClick={() => toggleTag(tag)}>
-                    {tag}
-                  </button>
-                ))}
-              </div>
-              <div className="input-row" style={{ marginTop: 8 }}>
-                <input type="text" className="form-input" placeholder="Custom tag (max 20 chars)"
-                  maxLength={20} value={customTag} onChange={e => setCustomTag(e.target.value)} />
-                <button type="button" className="add-tag-btn" onClick={addCustomTag}>Add</button>
-              </div>
-              {selectedTags.filter(t => !PRESET_TAGS.includes(t)).length > 0 && (
-                <div className="tags-group" style={{ marginTop: 8 }}>
-                  {selectedTags.filter(t => !PRESET_TAGS.includes(t)).map(tag => (
-                    <button key={tag} type="button" className="tag-chip tag-chip-active"
-                      onClick={() => toggleTag(tag)}>{tag}</button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label>Notes</label>
-              <textarea className="form-input form-textarea" rows={3}
-                placeholder='e.g. "Keep box for return," "Register online within 7 days"'
-                value={notes} onChange={e => setNotes(e.target.value)} />
-            </div>
-
             <div className="form-group">
               <label>Notification Preferences</label>
               <div className="checkbox-group">

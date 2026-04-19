@@ -1,32 +1,403 @@
-.claim-type-list,
-.tags-list {
+/* ─── Wrapper ─────────────────────────────────────────── */
+.receipt-details-wrapper {
+    padding: 32px 40px;
+    font-family: 'Montserrat', sans-serif;
+    background: #f8fafb;
+    min-height: 100vh;
+  }
+  
+  /* ─── Header ──────────────────────────────────────────── */
+  .receipt-details-header {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 28px;
+  }
+  
+  .vault-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 6px 0;
+  }
+  
+  .vault-subtitle {
+    font-size: 13px;
+    color: #888;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .breadcrumb-back {
+    cursor: pointer;
+    color: #00BFA5;
+    font-size: 16px;
+    margin-right: 4px;
+  }
+  
+  .breadcrumb-text {
+    color: #00BFA5;
+    font-weight: 500;
+  }
+  
+  .breadcrumb-sep {
+    color: #ccc;
+  }
+  
+  .breadcrumb-current {
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .receipt-details-header-right {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  
+  .btn-edit-receipt {
+    padding: 9px 22px;
+    border: 1.5px solid #00BFA5;
+    background: white;
+    color: #00BFA5;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.2s;
+  }
+  
+  .btn-edit-receipt:hover {
+    background: #f0fdf9;
+  }
+  
+  .btn-download-receipt {
+    padding: 9px 22px;
+    background: #00BFA5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.2s;
+  }
+  
+  .btn-download-receipt:hover {
+    background: #009e8a;
+  }
+  
+  /* ─── Body Layout ─────────────────────────────────────── */
+  .receipt-details-body {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  
+  /* ─── Left — Image Panel ──────────────────────────────── */
+  .receipt-details-left {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 240px;
+    flex-shrink: 0;
+  }
+  
+  .receipt-image-card {
+    background: linear-gradient(145deg, #e0f7f4, #c8ede8);
+    border-radius: 16px;
+    padding: 24px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    min-height: 260px;
+    justify-content: center;
+  }
+  
+  .receipt-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 120px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 10px;
+  }
+  
+  .receipt-icon {
+    font-size: 48px;
+  }
+  
+  .receipt-image-preview {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  
+  .receipt-filename {
+    font-size: 12px;
+    color: #00BFA5;
+    font-weight: 600;
+    text-align: center;
+    margin: 0;
+    word-break: break-all;
+  }
+  
+  .btn-view-full {
+    width: 100%;
+    padding: 10px;
+    background: white;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.2s;
+  }
+  
+  .btn-view-full:hover {
+    border-color: #00BFA5;
+    color: #00BFA5;
+  }
+  
+  /* ─── Right — Info Panel ──────────────────────────────── */
+  .receipt-details-right {
+    flex: 1;
+  }
+  
+  .receipt-info-card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px 32px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .receipt-info-section {
+    margin-bottom: 24px;
+  }
+  
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #00BFA5;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 16px 0;
+  }
+  
+  .receipt-info-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+  }
+  
+  .field-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    width: 180px;
+  }
+  
+  .field-value {
+    font-size: 14px;
+    color: #2d2d2d;
+    font-weight: 500;
+    text-align: right;
+  }
+  
+  .field-value.receipt-id {
+    color: #00BFA5;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  
+  .field-value.amount {
+    color: #00BFA5;
+    font-weight: 700;
+    font-size: 16px;
+  }
+  
+  .receipt-divider {
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    margin: 0;
+  }
+  
+  /* ─── Category Pill ───────────────────────────────────── */
+  .category-pill {
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #e0f7f4;
+    color: #00BFA5;
+  }
+  
+  /* ─── Warranty Card ───────────────────────────────────── */
+  .linked-warranty-card {
+    background: #f0fdf9;
+    border: 1.5px solid #00BFA5;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+  
+  .linked-warranty-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  
+  .linked-warranty-title {
+    font-weight: 700;
+    color: #00BFA5;
+    font-size: 14px;
+  }
+  
+  .linked-warranty-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin: 4px 0 0 0;
+  }
+  
+  /* ─── Status Pills ────────────────────────────────────── */
+  .status-pill {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  
+  .status-pill.status-active {
+    background: #e6f9f5;
+    color: #00BFA5;
+  }
+  
+  .status-pill.status-expired {
+    background: #fdecea;
+    color: #e53935;
+  }
+  
+  .status-pill.status-expiring {
+    background: #fff8e1;
+    color: #f59e0b;
+  }
+  
+  .status-pill.status-none {
+    background: #f5f5f5;
+    color: #999;
+  }
+  
+  
+  /* ─── Notification Preferences ───────────────────────── */
+  .notification-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .notification-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #555;
+    cursor: pointer;
+  }
+  
+  .notification-item input[type="checkbox"] {
+    accent-color: #00BFA5;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .claim-type-list,
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .claim-pill {
-    padding: 5px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    background-color: #eef4ff;
-    color: #4a6fa5;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #eef4ff;
+  color: #4a6fa5;
 }
 
 .tag-pill {
-    padding: 5px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    background-color: #f3f0ff;
-    color: #6c5fc7;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #f3f0ff;
+  color: #6c5fc7;
 }
 
-.receipt-notes {
-    font-size: 14px;
-    color: #666;
-    margin: 8px 0 0 0;
-    line-height: 1.6;
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.lightbox-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 75vh;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -36px;
+  right: 0;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.lightbox-download {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
 }

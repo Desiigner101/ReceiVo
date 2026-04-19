@@ -1,49 +1,329 @@
 .receipts-table-container {
-  font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+  font-family: 'Montserrat', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
+/* ─── Search Bar ──────────────────────────────────────── */
+.search-bar-row {
+  width: 100%;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1.5px solid #e0f7f4;
+  border-radius: 10px;
+  background: #f8fffe;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input-wrapper:focus-within {
+  border-color: #00BFA5;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(0, 191, 165, 0.1);
+}
+
+.search-icon {
+  font-size: 14px;
+  opacity: 0.4;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px 0;
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  color: #333;
+}
+
+.search-input::placeholder {
+  color: #b0bec5;
+  font-weight: 400;
+}
+
+.search-clear-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: #bbb;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+  font-family: 'Montserrat', sans-serif;
+  transition: color 0.2s;
+}
+
+.search-clear-btn:hover {
+  color: #e53935;
+}
+
+/* ─── Filter Toggle Row ───────────────────────────────── */
+.filter-toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-results {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #888;
+  font-weight: 500;
+}
+
+.filter-active-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: #e0f7f4;
+  color: #00BFA5;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.filter-toggle-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-clear-inline-btn {
+  padding: 7px 14px;
+  border: 1.5px solid #e0e0e0;
+  background: white;
+  color: #999;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.2s;
+}
+
+.filter-clear-inline-btn:hover {
+  border-color: #e53935;
+  color: #e53935;
+  background: #fdecea;
+}
+
+.filter-toggle-btn {
+  padding: 8px 18px;
+  border: 1.5px solid #00BFA5;
+  background: white;
+  color: #00BFA5;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.2s;
+}
+
+.filter-toggle-btn:hover,
+.filter-toggle-btn.active {
+  background: #00BFA5;
+  color: white;
+}
+
+/* ─── Filter Panel ────────────────────────────────────── */
+.filter-panel {
+  background: white;
+  border: 1.5px solid #e8f8f5;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 191, 165, 0.08);
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #00BFA5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-select,
+.filter-input {
+  padding: 10px 14px;
+  border: 1.5px solid #e0f7f4;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'Montserrat', sans-serif;
+  color: #333;
+  background: #f8fffe;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.filter-select:focus,
+.filter-input:focus {
+  border-color: #00BFA5;
+  background: white;
+}
+
+/* ─── Warranty Pills Filter ───────────────────────────── */
+.filter-warranty-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.filter-warranty-pill {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1.5px solid #e0e0e0;
+  background: white;
+  color: #888;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.2s;
+}
+
+.filter-warranty-pill:hover {
+  border-color: #00BFA5;
+  color: #00BFA5;
+}
+
+.filter-warranty-pill.active {
+  background: #00BFA5;
+  border-color: #00BFA5;
+  color: white;
+}
+
+/* ─── Filter Actions ──────────────────────────────────── */
+.filter-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.filter-clear-btn {
+  padding: 8px 18px;
+  border: 1.5px solid #e0e0e0;
+  background: white;
+  color: #888;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.2s;
+}
+
+.filter-clear-btn:hover {
+  border-color: #e53935;
+  color: #e53935;
+}
+
+/* ─── Table ───────────────────────────────────────────── */
 .receipts-table {
   width: 100%;
   border-collapse: collapse;
 }
-.receipts-table,
+
 .receipts-table th,
 .receipts-table td {
   border: none;
 }
 
 .receipts-table thead tr {
-  border-bottom: 1px solid var(--table-border);
+  border-bottom: 1px solid #f0f0f0;
 }
 
-
 .receipts-table th {
-  padding: 16px 12px;
+  padding: 14px 12px;
   text-align: center;
-  font-weight: 600;
-  font-size: 1em;
-  color: #333;
+  font-weight: 700;
+  font-size: 11px;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .receipts-table td {
   padding: 16px 12px;
-  border-bottom: 1px solid var(--table-border);
+  border-bottom: 1px solid #f5f5f5;
 }
 
+.receipt-row:hover {
+  background: #fafffe;
+}
+
+.table-empty {
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+  padding: 40px !important;
+}
+
+/* ─── Cells ───────────────────────────────────────────── */
 .receipt-cell {
   text-align: center;
-  font-weight: 500;
-  color: var(--receipt-color);
+  font-weight: 600;
+  color: #00BFA5;
+  font-size: 13px;
 }
 
 .store-cell {
-  text-align: center; 
+  text-align: left;
 }
 
+.store-dot-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.store-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #00BFA5;
+  flex-shrink: 0;
+}
 
 .store-name {
   font-weight: 500;
   color: #333;
+  font-size: 13px;
 }
 
 .category-cell {
@@ -52,89 +332,183 @@
 
 .category-pill {
   display: inline-block;
-  padding: 6px 16px;
+  padding: 5px 14px;
   border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.category-pill.device {
-  background-color: var(--category-device-bg);
-  color: var(--category-device-text);
-}
-
-.category-pill.meds {
-  background-color: var(--category-meds-bg);
-  color: var(--category-meds-text);
+  font-size: 12px;
+  font-weight: 600;
+  background: #e0f7f4;
+  color: #00BFA5;
 }
 
 .date-cell {
   text-align: center;
-  color: var(--date-color);
+  color: #888;
+  font-size: 13px;
   font-weight: 500;
 }
 
 .amount-cell {
   text-align: center;
-  font-weight: 600;
-  color: #333;
+  font-weight: 700;
+  color: #1a1a2e;
+  font-size: 14px;
 }
 
-.warranty-cell {
-  text-align: center;
+/* ─── Warranty ────────────────────────────────────────── */
+.warranty-cell { text-align: center; }
+
+.warranty-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.warranty-dates {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.warranty-date-label {
+  font-size: 10px;
+  color: #aaa;
+  text-transform: uppercase;
+}
+
+.warranty-date-value {
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
 }
 
 .warranty-pill {
   display: inline-block;
-  padding: 6px 16px;
+  padding: 5px 14px;
   border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
 }
 
-.warranty-pill.active {
-  background-color: var(--warranty-active-bg);
-  color: var(--warranty-active-text);
-}
+.warranty-pill.none         { background: #f5f5f5; color: #999; }
+.warranty-pill.active       { background: #e6f9f5; color: #00BFA5; }
+.warranty-pill.expiring_soon { background: #fff8e1; color: #f59e0b; }
+.warranty-pill.expired      { background: #fdecea; color: #e53935; }
 
-.warranty-pill.expiring {
-  background-color: var(--warranty-expiring-bg);
-  color: var(--warranty-expiring-text);
-}
-
-.warranty-pill.expired {
-  background-color: var(--warranty-expired-bg);
-  color: var(--warranty-expired-text);
-}
-
-.action-cell {
-  text-align: center;
-}
+/* ─── Actions ─────────────────────────────────────────── */
+.action-cell { text-align: center; }
 
 .action-buttons {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   justify-content: center;
 }
 
 .btn {
   background: transparent;
-  border: none;
   cursor: pointer;
+  font-size: 16px;
+  padding: 6px 10px;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.btn:hover        { border-color: #00BFA5; }
+.btn-view         { color: #00BFA5; }
+.btn-edit         { color: #888; }
+.btn-delete       { color: #e53935; }
+.btn-delete:hover { border-color: #e53935; background: #fdecea; }
+
+/* ─── Delete Modal ────────────────────────────────────── */
+.delete-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.delete-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  width: 380px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  animation: slideUp 0.25s ease;
+}
+
+.delete-modal-icon  { font-size: 40px; margin-bottom: 16px; }
+
+.delete-modal-title {
   font-size: 18px;
-  padding: 4px 8px;
-  border: 2px solid #dbdbdb;
-  border-radius: .5em;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 10px 0;
+  font-family: 'Montserrat', sans-serif;
 }
 
-.btn-view {
-  color: var(--button-view);
+.delete-modal-message {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 24px 0;
+  line-height: 1.6;
+  font-family: 'Montserrat', sans-serif;
 }
 
-.btn-edit {
-  color: var(--button-edit);
+.delete-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
 }
 
-.btn-delete {
-  color: var(--button-delete);
+.delete-modal-cancel {
+  padding: 10px 28px;
+  border: 1.5px solid #ddd;
+  background: white;
+  color: #555;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.2s;
+}
+
+.delete-modal-cancel:hover { border-color: #aaa; }
+
+.delete-modal-confirm {
+  padding: 10px 28px;
+  background: #e53935;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.2s;
+}
+
+.delete-modal-confirm:hover { background: #c62828; }
+
+/* ─── Animations ──────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

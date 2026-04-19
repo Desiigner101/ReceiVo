@@ -1,5 +1,6 @@
 const TABLE_NAME = 'u_x_1984201_receivo_receipt';
 const TABLE_API = `/api/now/table/${TABLE_NAME}`;
+const FETCH_API = `${TABLE_API}?sysparm_query=ORDERBYDESCsys_created_on&sysparm_display_value=true`
 
 const getCsrfToken = () => {
   return window.g_ck || window.gel?.('sysparm_ck') || '';
@@ -75,8 +76,15 @@ export const updateReceiptImageUrl = async (sysId, imageUrl) => {
   return res.json();
 };
 
+const extractVal = (field) => {
+  if (field === null || field === undefined) return null;
+  if (typeof field === 'object' && 'value' in field) return field.value;
+  return field;
+};
+
 export const fetchReceipts = async () => {
-  const res = await fetch(`${TABLE_API}?sysparm_limit=100&sysparm_order_by_desc=sys_created_on`, {
+  const res = await fetch(FETCH_API, 
+    {    
     method: 'GET',
     headers: getHeaders(),
     credentials: 'include'
@@ -91,9 +99,37 @@ export const fetchReceipts = async () => {
   const receipts = Array.isArray(data.result) ? data.result : [];
 
   return receipts.map(r => ({
-    ...r,
-    sys_id: r.sys_id?.value ?? r.sys_id,
-    image_url: r.u_image_url?.value ?? r.u_image_url ?? null,
+    // identity
+    sys_id:                   extractVal(r.sys_id),
+
+    // core receipt fields
+    u_receipt_number:         extractVal(r.u_receipt_number),
+    u_store:                  extractVal(r.u_store),
+    u_category:               extractVal(r.u_category),
+    u_date:                   extractVal(r.u_date),
+    u_purchase_date:          extractVal(r.u_purchase_date),
+    u_amount:                 extractVal(r.u_amount),
+    u_currency:               extractVal(r.u_currency) || 'PHP',
+    u_invoice_number:         extractVal(r.u_invoice_number),
+    u_purpose:                extractVal(r.u_purpose),
+
+    // image
+    u_image_url:              extractVal(r.u_image_url),
+    u_image_name:             extractVal(r.u_image_name),
+    image_url:                extractVal(r.u_image_url),
+
+    // warranty
+    u_warranty:               extractVal(r.u_warranty) || 'None',
+    u_warranty_duration:      extractVal(r.u_warranty_duration),
+    u_warranty_end_date:      extractVal(r.u_warranty_end_date),
+    u_brand:                  extractVal(r.u_brand),
+    u_product_name:           extractVal(r.u_product_name),
+    u_serial_number:          extractVal(r.u_serial_number),
+
+    // claim & notifications
+    u_intended_claim_type:    extractVal(r.u_intended_claim_type),
+    u_notification_rules:     extractVal(r.u_notification_rules),
+    u_notifications_enabled:  extractVal(r.u_notifications_enabled),
   }));
 };
 
@@ -120,7 +156,6 @@ export const addReceiptWithImage = async (payload, file) => {
 
       if (attachmentSysId) {
         imageUrl = `/api/now/attachment/${attachmentSysId}/file`;
-
         await updateReceiptImageUrl(sysId, imageUrl);
       }
     }
@@ -139,4 +174,35 @@ export const addReceiptWithImage = async (payload, file) => {
       error: err.message || String(err)
     };
   }
+};
+
+export const deleteReceipt = async (sysId) => {
+  const res = await fetch(`${TABLE_API}/${sysId}`, {
+    method: 'DELETE',
+    headers: getHeaders(),
+    credentials: 'include'
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`deleteReceipt failed: ${res.status} - ${errorText}`);
+  }
+
+  return true;
+};
+
+export const fileClaim = async (receiptID) => {
+  const res = await fetch(`${TABLE_API}/file-claim`, {
+    method: 'POST',
+    headers: getHeaders(),
+    credentials: 'include',
+    body: JSON.stringify({ receiptId: receiptID })
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`fileClaim failed: ${res.status} - ${errorText}`);
+  }
+
+  return await res.json();
 };

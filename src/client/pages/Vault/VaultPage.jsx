@@ -3,10 +3,9 @@ import TopBar from '../../components/globalComponents/TopBar';
 import NavigationBar from '../../components/globalComponents/NavigationBar';
 import { ReceiptsTable } from '../../components/listComponents/ReceiptsTable';
 import ReceiptDetails from '../../components/displayComponents/ReceiptDetails';
-import mockReceipts from './mockReceipts.json';
 import './VaultPage.css';
 
-function VaultPage({ activePage, onNavigate }) {
+function VaultPage({ activePage, onNavigate, receipts, onDelete }) {
   const [selectedReceipt, setSelectedReceipt] = useState(null);
 
   return (
@@ -22,11 +21,16 @@ function VaultPage({ activePage, onNavigate }) {
             />
           ) : (
             <>
-              <h1>Digital Vault</h1>
-              <p>{mockReceipts.length} receipts stored</p>
+              <div className="vault-header">
+                <div>
+                  <h1 className="vault-page-title">Digital Vault</h1>
+                  <p className="vault-page-subtitle">{receipts.length} receipts stored</p>
+                </div>
+              </div>
               <ReceiptsTable
-                data={mockReceipts}
+                data={receipts}
                 onView={(receipt) => setSelectedReceipt(receipt)}
+                onDelete={onDelete}
               />
             </>
           )}

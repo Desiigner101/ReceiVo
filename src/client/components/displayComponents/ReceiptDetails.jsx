@@ -1,167 +1,294 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './ReceiptDetails.css';
-import mockWarranties from '../../pages/Warranty/mockWarranties.json';
-
+import { fetchAttachmentUrl, downloadAttachment } from '../../api/api';
+import { FileClaimButton } from '../FileClaimButton';
 const ReceiptDetails = ({ receipt, onBack }) => {
-    if (!receipt) return null;
+  const [blobUrl, setBlobUrl] = useState(null);
+  const rawImageUrl = receipt?.u_image_url || receipt?.image_url || null;
 
-    const linkedWarranty = mockWarranties.find(
-        w => w.linkedReceipt === receipt.receipt
-    );
+  useEffect(() => {
+    if (!rawImageUrl) return;
+    let objectUrl;
+    fetchAttachmentUrl(rawImageUrl)
+      .then(url => { 
+        objectUrl = url; 
+        setBlobUrl(url); 
+      })
+      .catch(err => console.error('❌ Image load failed:', err));
+    return () => { if (objectUrl) URL.revokeObjectURL(objectUrl); };
+  }, [rawImageUrl]);
 
-    return (
-        <div className="receipt-details-wrapper">
-            <div className="receipt-details-breadcrumb">
-                <span className="breadcrumb-back" onClick={onBack}>←</span>
-                <span className="breadcrumb-text">Digital Vault</span>
-                <span className="breadcrumb-sep">/</span>
-                <span className="breadcrumb-current">#{receipt.receipt}</span>
-            </div>
+  if (!receipt) return null;
 
-            <div className="receipt-details-body">
-                <div className="receipt-details-left">
-                    <div className="receipt-image-card">
-                        <div className="receipt-image-placeholder">
-                            <div className="receipt-icon">📄</div>
-                        </div>
-                        <p className="receipt-filename">
-                            receipt_{receipt.store.toLowerCase().replace(/ /g, '_')}.jpg
-                        </p>
-                    </div>
-                    <button className="btn-view-full">View Full Image</button>
-                </div>
+  console.log('RECEIPT DATA:', JSON.stringify(receipt, null, 2));
 
-                <div className="receipt-details-right">
-                    <div className="receipt-info-card">
+  const receiptNum = receipt.u_receipt_number || receipt.receipt || '—';
+  const store = receipt.u_store || receipt.store || '—';
+  const category = receipt.u_category || receipt.category || '—';
+  const date = receipt.u_purchase_date || receipt.u_date || receipt.date || '—';
+  const amount = parseFloat(receipt.u_amount || receipt.amount) || 0;
+  const invoiceNumber = receipt.u_invoice_number || receipt.invoiceNumber || null;
+  const purpose = receipt.u_purpose || receipt.purpose || null;
+  const notes = receipt.u_notes || receipt.notes || null;
+  const imageUrl = receipt.u_image_url || receipt.image_url || null;
+  const imageName = receipt.u_image_name || null;
+  const currency = receipt.u_currency || receipt.currency || 'PHP';
+  const warranty = receipt.u_warranty || receipt.warranty || 'None';
+  const warrantyEndDate = receipt.u_warranty_end_date || null;
+  const warrantyDuration = receipt.u_warranty_duration || null;
+  const brand = receipt.u_brand || null;
+  const productName = receipt.u_product_name || null;
+  const serialNumber = receipt.u_serial_number || null;
+  const tags = receipt.u_tags || null;
+  const claimType = receipt.u_intended_claim_type || null;
+  const notificationRules = receipt.u_notification_rules || null;
 
-                        {/* Transaction Details */}
-                        <div className="receipt-info-section">
-                            <h3 className="section-title">Transaction Details</h3>
-                            <div className="receipt-info-field">
-                                <span className="field-label">RECEIPT ID</span>
-                                <span className="field-value receipt-id">#{receipt.receipt}</span>
-                            </div>
-                            <div className="receipt-info-field">
-                                <span className="field-label">INVOICE NUMBER</span>
-                                <span className="field-value">{receipt.invoiceNumber || '—'}</span>
-                            </div>
-                            <div className="receipt-info-field">
-                                <span className="field-label">STORE / MERCHANT NAME</span>
-                                <span className="field-value">{receipt.store}</span>
-                            </div>
-                            <div className="receipt-info-field">
-                                <span className="field-label">PURCHASE DATE</span>
-                                <span className="field-value">{receipt.date}</span>
-                            </div>
-                            <div className="receipt-info-field">
-                                <span className="field-label">TOTAL AMOUNT</span>
-                                <span className="field-value amount">
-                                    {receipt.currency || 'PHP'} {receipt.amount.toFixed(2)}
-                                </span>
-                            </div>
-                            <div className="receipt-info-field">
-                                <span className="field-label">CATEGORY</span>
-                                <span className={`category-pill ${receipt.category.toLowerCase()}`}>
-                                    {receipt.category}
-                                </span>
-                            </div>
-                            <div className="receipt-info-field">
-                                <span className="field-label">WARRANTY STATUS</span>
-                                <span className={`status-pill status-${receipt.warranty.toLowerCase()}`}>
-                                    {receipt.warranty}
-                                </span>
-                            </div>
-                            {receipt.purpose && (
-                                <div className="receipt-info-field">
-                                    <span className="field-label">PURPOSE</span>
-                                    <span className="field-value">{receipt.purpose}</span>
-                                </div>
-                            )}
-                        </div>
+  const safeParseArray = (val) => {
+    if (!val) return null;
+    if (Array.isArray(val)) return val;
+    try {
+      const parsed = JSON.parse(val);
+      return Array.isArray(parsed) ? parsed : [String(parsed)];
+    } catch {
+      return val.split(',').map(s => s.trim()).filter(Boolean);
+    }
+  };
 
-                        {/* Claim Type */}
-                        {receipt.claimType?.length > 0 && (
-                            <div className="receipt-info-section">
-                                <h3 className="section-title">Claim Type</h3>
-                                <div className="claim-type-list">
-                                    {receipt.claimType.map((claim, index) => (
-                                        <span key={index} className="claim-pill">{claim}</span>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+  const parsedClaims = safeParseArray(claimType);
+  const parsedTags = safeParseArray(tags);
+  const parsedNotifications = safeParseArray(notificationRules);
 
-                        {/* Tags */}
-                        {receipt.tags?.length > 0 && (
-                            <div className="receipt-info-section">
-                                <h3 className="section-title">Tags</h3>
-                                <div className="tags-list">
-                                    {receipt.tags.map((tag, index) => (
-                                        <span key={index} className="tag-pill">{tag}</span>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+  return (
+    <div className="receipt-details-wrapper">
 
-                        {/* Notes */}
-                        {receipt.notes && (
-                            <div className="receipt-info-section">
-                                <h3 className="section-title">Notes</h3>
-                                <p className="receipt-notes">{receipt.notes}</p>
-                            </div>
-                        )}
-
-                        {/* Linked Warranty */}
-                        {linkedWarranty && (
-                            <div className="receipt-info-section">
-                                <h3 className="section-title">Linked Warranty</h3>
-                                <div className="linked-warranty-card">
-                                    <div className="linked-warranty-header">
-                                        <span className="linked-warranty-title">{linkedWarranty.itemName}</span>
-                                        <span className={`status-pill status-${linkedWarranty.status.toLowerCase()}`}>
-                                            {linkedWarranty.status}
-                                        </span>
-                                    </div>
-                                    <p className="linked-warranty-expiry">
-                                        Expires: {linkedWarranty.expiryDate} · {linkedWarranty.daysLeft} days remaining
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Notification Preferences */}
-                        <div className="receipt-info-section">
-                            <h3 className="section-title">Notification Preferences</h3>
-                            <div className="notification-options">
-                                <label className="notification-item">
-                                    <input
-                                        type="checkbox"
-                                        defaultChecked={receipt.notifications?.warrantyAlert7Days ?? true}
-                                    />
-                                    <span>Alert me 7 days before warranty expires</span>
-                                </label>
-                                <label className="notification-item">
-                                    <input
-                                        type="checkbox"
-                                        defaultChecked={receipt.notifications?.returnWindowAlert3Days ?? true}
-                                    />
-                                    <span>Alert me 3 days before return window closes</span>
-                                </label>
-                                <label className="notification-item">
-                                    <input
-                                        type="checkbox"
-                                        defaultChecked={receipt.notifications?.philhealthAlert14Days ?? false}
-                                    />
-                                    <span>Alert me 14 days before PhilHealth/HMO filing deadline</span>
-                                </label>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+      <div className="receipt-details-header">
+        <div className="receipt-details-header-left">
+          <h1 className="vault-title">Digital Vault</h1>
+          <p className="vault-subtitle">
+            <span className="breadcrumb-back" onClick={onBack}>←</span>
+            <span className="breadcrumb-text" onClick={onBack} style={{cursor:'pointer'}}>Digital Vault</span>
+            <span className="breadcrumb-sep"> / </span>
+            <span className="breadcrumb-current">{receiptNum}</span>
+          </p>
         </div>
-    );
+        <div className="receipt-details-header-right">
+      <button
+        className="btn-download-receipt"
+        onClick={() => {
+          if (!blobUrl || !imageName) return;
+          
+          const a = document.createElement('a');
+          a.href = blobUrl;
+          a.download = imageName || `receipt_${store.toLowerCase().replace(/ /g, '_')}.jpg`;
+          a.click(); 
+        }}
+      >
+        ↓ Download proof
+      </button>
+
+        </div>
+      </div>
+
+      <div className="receipt-details-body">
+        <div className="receipt-details-left">
+          <div className="receipt-image-card">
+            {blobUrl  ? (
+              <img
+                src={blobUrl}
+                alt="Receipt"
+                className="receipt-image-preview"
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
+            ) : (
+              <div className="receipt-image-placeholder">
+                <div className="receipt-icon">📄</div>
+              </div>
+            )}
+            <p className="receipt-filename">
+              {imageName || `receipt_${store.toLowerCase().replace(/ /g, '_')}.jpg`}
+            </p>
+            <FileClaimButton 
+            receipt={receipt} 
+            onClaim={handleAfterClaim} 
+          />
+          <button> hello there </button>
+          </div>
+          {/* <button
+            className="btn-view-full"
+            onClick={() => blobUrl  && window.open(blobUrl , '_blank')}
+          >
+            View Full Image
+          </button> */}
+
+
+<button
+  className="btn-view-full"
+  onClick={() => {
+    if (!blobUrl) return;
+    const win = window.open();
+    win.document.write(`<img src="${blobUrl}" style="max-width:100%;"/>`);
+  }}
+>
+  View Full Image
+</button>
+        </div>
+
+        {}
+        <div className="receipt-details-right">
+          <div className="receipt-info-card">
+
+            {}
+            <div className="receipt-info-section">
+              <h3 className="section-title">Transaction Details</h3>
+
+              <div className="receipt-info-field">
+                <span className="field-label">RECEIPT ID</span>
+                <span className="field-value receipt-id">{receiptNum}</span>
+              </div>
+              <div className="receipt-divider" />
+
+              <div className="receipt-info-field">
+                <span className="field-label">STORE NAME</span>
+                <span className="field-value">{store}</span>
+              </div>
+              <div className="receipt-divider" />
+
+              <div className="receipt-info-field">
+                <span className="field-label">CATEGORY</span>
+                <span className={`category-pill ${category.toLowerCase().replace(/ /g, '_')}`}>
+                  {category}
+                </span>
+              </div>
+              <div className="receipt-divider" />
+
+              <div className="receipt-info-field">
+                <span className="field-label">PURCHASE DATE</span>
+                <span className="field-value">{date}</span>
+              </div>
+              <div className="receipt-divider" />
+
+              <div className="receipt-info-field">
+                <span className="field-label">TOTAL AMOUNT</span>
+                <span className="field-value amount">
+                  {amount.toLocaleString('en-PH', { minimumFractionDigits: 2 })}
+                </span>
+              </div>
+
+              {invoiceNumber && (
+                <>
+                  <div className="receipt-divider" />
+                  <div className="receipt-info-field">
+                    <span className="field-label">INVOICE NUMBER</span>
+                    <span className="field-value">{invoiceNumber}</span>
+                  </div>
+                </>
+              )}
+
+              {purpose && (
+                <>
+                  <div className="receipt-divider" />
+                  <div className="receipt-info-field">
+                    <span className="field-label">PURPOSE</span>
+                    <span className="field-value">{purpose}</span>
+                  </div>
+                </>
+              )}
+            </div>
+            {warranty && warranty !== 'None' && (
+              <div className="linked-warranty-card">
+                <div className="linked-warranty-header">
+                  <span className="linked-warranty-title">Warranty Details</span>
+                  <span className={`status-pill status-${warranty.toLowerCase()}`}>{warranty}</span>
+                </div>
+
+                {productName && (
+                  <div className="receipt-info-field">
+                    <span className="field-label">PRODUCT</span>
+                    <span className="field-value">{productName}</span>
+                  </div>
+                )}
+                {brand && (
+                  <div className="receipt-info-field">
+                    <span className="field-label">BRAND</span>
+                    <span className="field-value">{brand}</span>
+                  </div>
+                )}
+                {serialNumber && (
+                  <div className="receipt-info-field">
+                    <span className="field-label">SERIAL NO.</span>
+                    <span className="field-value">{serialNumber}</span>
+                  </div>
+                )}
+                {warrantyDuration && (
+                  <div className="receipt-info-field">
+                    <span className="field-label">DURATION</span>
+                    <span className="field-value">{warrantyDuration} days</span>
+                  </div>
+                )}
+                {warrantyEndDate && (
+                  <div className="receipt-info-field">
+                    <span className="field-label">EXPIRES</span>
+                    <span className="field-value">{warrantyEndDate}</span>
+                  </div>
+                )}
+              </div>
+            )}
+            {parsedClaims?.length > 0 && (
+              <div className="receipt-info-section">
+                <h3 className="section-title">Intended Claim Type</h3>
+                <div className="claim-type-list">
+                  {parsedClaims.map((claim, i) => (
+                    <span key={i} className="claim-pill">{claim}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {parsedTags?.length > 0 && (
+              <div className="receipt-info-section">
+                <h3 className="section-title">Tags</h3>
+                <div className="tags-list">
+                  {parsedTags.map((tag, i) => (
+                    <span key={i} className="tag-pill">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {notes && (
+              <div className="receipt-info-section">
+                <h3 className="section-title">Notes</h3>
+                <p className="receipt-notes">{notes}</p>
+              </div>
+            )}
+            <div className="receipt-info-section">
+              <h3 className="section-title">Notification Preferences</h3>
+              <div className="notification-options">
+                {parsedNotifications?.length > 0 ? (
+                  parsedNotifications.map((rule, i) => (
+                    <label key={i} className="notification-item">
+                      <input type="checkbox" defaultChecked={true} readOnly />
+                      <span>{rule}</span>
+                    </label>
+                  ))
+                ) : (
+                  <>
+                    <label className="notification-item">
+                      <input type="checkbox" defaultChecked={true} />
+                      <span>Alert me 3 days before return window closes</span>
+                    </label>
+                    <label className="notification-item">
+                      <input type="checkbox" defaultChecked={false} />
+                      <span>Alert me 14 days before PhilHealth/HMO filing deadline</span>
+                    </label>
+                  </>
+                )}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ReceiptDetails;
